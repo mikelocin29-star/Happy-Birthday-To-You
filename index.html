@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Piano with Sheet Music</title>
+  <title>Online Piano (C4 to A5)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <style>
     body {
@@ -27,10 +27,9 @@
       color: #aaa;
       margin-bottom: 20px;
       text-align: center;
-      max-width: 600px;
+      max-width: 650px;
     }
 
-    /* Style for your notation image */
     .sheet-music {
       max-width: 400px;
       width: 100%;
@@ -60,9 +59,7 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding-bottom: 12px;
       font-weight: bold;
-      font-size: 12px;
       transition: background 0.1s;
     }
 
@@ -73,6 +70,8 @@
       color: #333;
       border: 1px solid #ccc;
       z-index: 1;
+      padding-bottom: 12px;
+      font-size: 11px;
     }
 
     .white.active, .white:active {
@@ -88,44 +87,56 @@
       z-index: 2;
       border-radius: 0 0 4px 4px;
       border: 1px solid #111;
-      cursor: default;
+      padding-bottom: 8px;
+      font-size: 9px;
+    }
+
+    .black.active, .black:active {
+      background: #555;
     }
   </style>
 </head>
 <body>
 
-  <h1>Online Piano & Notation</h1>
-  <p>Use your computer keyboard numbers (1 to 0) to play along with the grid notation below!</p>
+  <h1>Online Piano (C4 - A5)</h1>
+  <p>Play using your computer keyboard rows or click directly with your mouse!</p>
 
-  <!-- INSERT YOUR IMAGE HERE -->
-  <img src="notation.png" alt="Piano Grid Notation" class="sheet-music">
+  <!-- Optional sheet music / notation image if placed in the same folder -->
+  <img src="notation.png" alt="Piano Grid Notation" class="sheet-music" onerror="this.style.display='none'">
 
   <div id="piano">
-    <!-- White Keys (Active with sounds and numbered labels) -->
-    <div class="key white" data-note="C4" data-key="1">1</div>
-    <div class="key white" data-note="D4" data-key="2">2</div>
-    <div class="key white" data-note="E4" data-key="3">3</div>
-    <div class="key white" data-note="F4" data-key="4">4</div>
-    <div class="key white" data-note="G4" data-key="5">5</div>
-    <div class="key white" data-note="A4" data-key="6">6</div>
-    <div class="key white" data-note="B4" data-key="7">7</div>
-    <div class="key white" data-note="C5" data-key="8">8</div>
-    <div class="key white" data-note="D5" data-key="9">9</div>
-    <div class="key white" data-note="E5" data-key="0">0</div>
+    <!-- White Keys (C4 to A5) -->
+    <div class="key white" data-note="C4" data-key="z">Z</div>
+    <div class="key white" data-note="D4" data-key="x">X</div>
+    <div class="key white" data-note="E4" data-key="c">C</div>
+    <div class="key white" data-note="F4" data-key="v">V</div>
+    <div class="key white" data-note="G4" data-key="b">B</div>
+    <div class="key white" data-note="A4" data-key="n">N</div>
+    <div class="key white" data-note="B4" data-key="m">M</div>
+    <div class="key white" data-note="C5" data-key=",">,</div>
+    <div class="key white" data-note="D5" data-key=".">.</div>
+    <div class="key white" data-note="E5" data-key="/">/</div>
+    <div class="key white" data-note="F5" data-key="a">A</div>
+    <div class="key white" data-note="G5" data-key="s">S</div>
+    <div class="key white" data-note="A5" data-key="d">D</div>
 
-    <!-- Black Keys (Now active with sounds and letter labels) -->
-    <div class="key black" data-note="C#4" data-key="q" style="left: 37px;">Q</div>
-    <div class="key black" data-note="D#4" data-key="w" style="left: 77px;">W</div>
+    <!-- Black Keys (C4# to A5# positioned precisely) -->
+    <div class="key black" data-note="C#4" data-key="s" style="left: 37px;">S</div>
+    <div class="key black" data-note="D#4" data-key="d" style="left: 77px;">D</div>
     
-    <div class="key black" data-note="F#4" data-key="r" style="left: 157px;">R</div>
-    <div class="key black" data-note="G#4" data-key="t" style="left: 197px;">T</div>
-    <div class="key black" data-note="A#4" data-key="y" style="left: 237px;">Y</div>
+    <div class="key black" data-note="F#4" data-key="g" style="left: 157px;">G</div>
+    <div class="key black" data-note="G#4" data-key="h" style="left: 197px;">H</div>
+    <div class="key black" data-note="A#4" data-key="j" style="left: 237px;">J</div>
     
-    <div class="key black" data-note="C#5" data-key="i" style="left: 317px;">I</div>
-    <div class="key black" data-note="D#5" data-key="o" style="left: 357px;">O</div>
+    <div class="key black" data-note="C#5" data-key="l" style="left: 317px;">L</div>
+    <div class="key black" data-note="D#5" data-key=";" style="left: 357px;">;</div>
+    
+    <div class="key black" data-note="F#5" data-key="q" style="left: 437px;">Q</div>
+    <div class="key black" data-note="G#5" data-key="w" style="left: 477px;">W</div>
   </div>
 
   <script>
+    // Initialize Tone.js Sampler with realistic acoustic piano sounds
     const pianoSampler = new Tone.Sampler({
       urls: {
         "C4": "C4.mp3",
@@ -139,6 +150,7 @@
       }
     }).toDestination();
 
+    // Function to play note and trigger visual press animation
     async function playNote(note, element) {
       if (Tone.context.state !== 'running') {
         await Tone.start();
@@ -152,12 +164,14 @@
       }
     }
 
+    // Mouse event listeners for all active keys
     const keys = document.querySelectorAll('.key[data-note]');
     keys.forEach(key => {
       const note = key.dataset.note;
       key.addEventListener('mousedown', () => playNote(note, key));
     });
 
+    // Computer keyboard listeners
     window.addEventListener('keydown', (e) => {
       if (e.repeat) return; 
 
