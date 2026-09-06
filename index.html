@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Piano (C4 to A5)</title>
+  <title>Online Piano (C4 to G5)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <style>
     body {
@@ -97,7 +97,7 @@
     .dropdown:hover .dropdown-content {
       display: block;
     }
-    
+
     h1 {
       margin-bottom: 5px;
     }
@@ -109,6 +109,7 @@
       max-width: 650px;
     }
 
+    /* Sheet Music / Notation Image Styles */
     .sheet-music {
       max-width: 400px;
       width: 100%;
@@ -177,14 +178,34 @@
 </head>
 <body>
 
-  <h1>Online Piano (C4 - A5)</h1>
-  <p>Play using your computer keyboard rows or click directly with your mouse!</p>
+  <!-- EMBEDDED NAVIGATION BAR WITH DROPDOWN -->
+  <nav class="navbar">
+    <a href="index.html">Home / Piano</a>
+    
+    <!-- Song Library Dropdown Menu -->
+    <div class="dropdown">
+      <button class="dropbtn">Song Library ▾</button>
+      <div class="dropdown-content">
+        <a href="https://mikelocin29-star.github.io/See-You-Again-Piano-Intro/">See You Again (Intro)</a>
+        <a href="https://mikelocin29-star.github.io/See-You-Again-Chorus/">See You Again (Chorus)</a>
+        <a href="https://mikelocin29-star.github.io/My-Favortite-Things-Verse/">My Favorite Things (Verse)</a>
+        <a href="https://mikelocin29-star.github.io/My-Favortite-Things-Chorus/">My Favorite Things (Chorus)</a>
+        <a href="https://mikelocin29-star.github.io/Happy-Birthday-To-You/">Happy Birthday To You</a>
+      </div>
+    </div>
 
-  <!-- Optional sheet music / notation image if placed in the same folder -->
+    <a href="chords.html">Chord Guide</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <h1>Online Piano (C4 - G5)</h1>
+  <p>White keys: <b>1 to =</b> | Black keys: <b>Q,W | R,T,Y | I,O | [</b> (or click with your mouse!)</p>
+
+  <!-- Sheet Music / Notation Image Element -->
   <img src="notation.png" alt="Piano Grid Notation" class="sheet-music" onerror="this.style.display='none'">
 
   <div id="piano">
-    <!-- White Keys (C4 to A5) -->
+    <!-- White Keys (C4 to G5 mapped to 1 through =) -->
     <div class="key white" data-note="C4" data-key="1">1</div>
     <div class="key white" data-note="D4" data-key="2">2</div>
     <div class="key white" data-note="E4" data-key="3">3</div>
@@ -197,9 +218,8 @@
     <div class="key white" data-note="E5" data-key="0">0</div>
     <div class="key white" data-note="F5" data-key="-">-</div>
     <div class="key white" data-note="G5" data-key="=">=</div>
-    <div class="key white" data-note="A5" data-key=""></div>
 
-    <!-- Black Keys (C4# to A5# positioned precisely) -->
+    <!-- Black Keys -->
     <div class="key black" data-note="C#4" data-key="q" style="left: 37px;">Q</div>
     <div class="key black" data-note="D#4" data-key="w" style="left: 77px;">W</div>
     
@@ -211,11 +231,10 @@
     <div class="key black" data-note="D#5" data-key="o" style="left: 357px;">O</div>
     
     <div class="key black" data-note="F#5" data-key="[" style="left: 437px;">[</div>
-    <div class="key black" data-note="G#5" data-key="]" style="left: 477px;">]</div>
   </div>
 
   <script>
-    // Initialize Tone.js Sampler with realistic acoustic piano sounds
+    // Piano audio and interaction logic using Tone.js
     const pianoSampler = new Tone.Sampler({
       urls: {
         "C4": "C4.mp3",
@@ -229,7 +248,6 @@
       }
     }).toDestination();
 
-    // Function to play note and trigger visual press animation
     async function playNote(note, element) {
       if (Tone.context.state !== 'running') {
         await Tone.start();
@@ -243,14 +261,12 @@
       }
     }
 
-    // Mouse event listeners for all active keys
     const keys = document.querySelectorAll('.key[data-note]');
     keys.forEach(key => {
       const note = key.dataset.note;
       key.addEventListener('mousedown', () => playNote(note, key));
     });
 
-    // Computer keyboard listeners
     window.addEventListener('keydown', (e) => {
       if (e.repeat) return; 
 
